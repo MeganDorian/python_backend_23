@@ -13,6 +13,7 @@ path = ".venv"
 python = "^3.9"
 fastapi = "^0.103.2"
 uvicorn = {extras = ["standard"], version = "^0.23.2"}
+pydantic = {version = "*"}
 
 [tool.poetry.dev-dependencies]
 black = "^23.9.1"
