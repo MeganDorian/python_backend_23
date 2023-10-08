@@ -24,4 +24,4 @@ class Subject(SubjectBase):
     hws: list[Homework] = []
 
     class Config:
-        orm_mode = True
+        from_attributes = True
