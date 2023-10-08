@@ -5,15 +5,12 @@ description = ""
 authors = ["Julie Kosenko <mishakollins68@gmail.com>"]
 readme = "README.md"
 
-[virtualenvs]
-in-project = true
-path = ".venv"
-
 [tool.poetry.dependencies]
 python = "^3.9"
 fastapi = "^0.103.2"
 uvicorn = {extras = ["standard"], version = "^0.23.2"}
 pydantic = {version = "*"}
+sqlalchemy = "^2.0.21"
 
 [tool.poetry.dev-dependencies]
 black = "^23.9.1"
