@@ -7,30 +7,31 @@ from db.database import Base
 from models.models import User
 
 SQLALCHEMY_DATABASE_URL = "sqlite:///./test.db"
+BASE_URL = "http://127.0.0.1:8000"
 
 engine = sqlalchemy.create_engine(
     SQLALCHEMY_DATABASE_URL,
     connect_args={"check_same_thread": False},
 )
-TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+TestSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base.metadata.create_all(bind=engine)
 
 
-def override_get_db():
+def test_db():
     try:
-        db = TestingSessionLocal()
+        db = TestSessionLocal()
         yield db
     finally:
         db.close()
 
 
 def init_db(db: Session):
-    question1 = User(name="What is the capital of France?")
-    db.add(question1)
+    user = User(name="Kelvin Kelly")
+    db.add(user)
 
     db.commit()
     db.close()
 
 
-app.dependency_overrides[get_db] = override_get_db
-init_db(TestingSessionLocal())
+app.dependency_overrides[get_db] = test_db
+init_db(TestSessionLocal())

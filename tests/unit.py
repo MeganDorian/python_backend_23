@@ -1,12 +1,12 @@
 import pytest
 
 from crud.crud import get_users
-from tests.setup import TestingSessionLocal
+from tests.setup import TestSessionLocal
 
 
 @pytest.fixture(scope="module")
 def setup_db():
-    db = TestingSessionLocal()
+    db = TestSessionLocal()
     return db
 
 
