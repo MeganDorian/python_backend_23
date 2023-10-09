@@ -33,9 +33,11 @@ def init_db(db: Session):
     db.add(user)
     user = User(name="Milly Tompson")
     db.add(user)
-    subject = Subject(name="Rodeo", teacher="Jelly Jam", type=SubjectType.LECTURE, day=Days.FRI,
-                      time_start=datetime.time(8, 0, 0), time_end=datetime.time(10, 0, 0))
-    db.add(subject)
+    subject = [Subject(name="Rodeo", teacher="Jelly Jam", type=SubjectType.LECTURE, day=Days.FRI,
+                       time_start=datetime.time(8, 0, 0), time_end=datetime.time(10, 0, 0)),
+               Subject(name="Singing", teacher="Jimmy Jo", type=SubjectType.PRACTICE, day=Days.MON,
+                       time_start=datetime.time(10, 30, 0), time_end=datetime.time(12, 0, 0))]
+    db.add_all(subject)
     user_sub = [UserSubject(id_user=1, id_subject=1), UserSubject(id_user=2, id_subject=1)]
     db.add_all(user_sub)
     db.commit()

@@ -3,7 +3,7 @@ import time
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
 
-from crud.crud import get_users, get_user_subjects
+from crud.crud import get_users, get_user_subjects, get_homeworks
 from db.database import engine, SessionLocal
 from models.models import Base
 from shemas.subject import Subject, SubjectBase
@@ -52,55 +52,9 @@ def user_subjects(user_id: int, db: Session = Depends(get_db)):
     return subjects
 
 
-# @router.post("/subjects/add")
-# def add_subject(name: str, teacher: str | None, type: str | None, day: str | None, time_start: str | None,
-#                 time_end: str | None):
-@router.post("/subjects/add")
-def add_subject(sub: SubjectBase):
-    pass
-
-
 @router.get("/subjects/{subject_id}/homeworks")
-def all_homeworks(subject_id: int):
-    pass
-
-# @router.get("/subjects/get/{name}")
-# def get_subject_info(name: str):
-#     f"""
-#     Get entry point with parameter
-#     :return: information about {name} subject
-#     """
-#     sub = next((subject for subject in subjects if subject.name == name), None)
-#     if sub is None:
-#         raise HTTPException(status_code=404, detail=f"Subject {name} not found")
-#     return {
-#         "Subject information: ",
-#         f"Name: {sub.name} ",
-#         f"Teacher: {sub.teacher}",
-#         f"Start date: {sub.start_date}",
-#         f"End date: {sub.end_date}",
-#     }
-
-
-# @router.get("/subjects/{name}")
-# def get_info_by_field(name: str, field: str):
-#     f"""
-#     Get entry point with query parameter
-#     :return: {field} information about {name} subject
-#     """
-#     sub = next((subject for subject in subjects if subject.name == name), None)
-#     if sub is None:
-#         raise HTTPException(status_code=404, detail=f"Subject {name} not found")
-#     if not hasattr(sub, field):
-#         raise HTTPException(status_code=404, detail=f"There is no field {field}")
-#     return {f"Your information: {getattr(sub, field)}"}
-
-
-# @router.post("/subjects/add")
-# def post_subject(sub: SubjectBase):
-#     """
-#     Post entry point to add new subject with fields from Subject class
-#     :param sub: contains new subject information
-#     :return: new subject
-#     """
-#     return sub
+def all_homeworks(subject_id: int, db: Session = Depends(get_db)):
+    hws = get_homeworks(db, subject_id)
+    if hws is None:
+        raise HTTPException(status_code=404, detail=f"Subject with id={subject_id} not found")
+    return hws

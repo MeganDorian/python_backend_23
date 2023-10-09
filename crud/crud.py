@@ -26,3 +26,10 @@ def get_subject(db: Session, subject_id: int):
     Get subject by id from db
     """
     return db.query(Subject).filter(Subject.id == subject_id).first()
+
+
+def get_homeworks(db: Session, subject_id: int):
+    """
+    Get all homeworks of selected subject
+    """
+    return get_subject(db, subject_id).hws
