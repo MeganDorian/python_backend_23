@@ -1,0 +1,48 @@
+version: '3.9'
+
+services:
+  rabbitmq:
+    image: rabbitmq:management-alpine
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+    environment:
+      RABBITMQ_DEFAULT_USER: megan
+      RABBITMQ_DEFAULT_PASS: megan123
+    restart: unless-stopped
+    networks:
+      - backend-net
+
+  fastapi:
+    build:
+      context: .
+      dockerfile: DockerfileFastapi
+    image: fastapi
+    container_name: app
+    ports:
+      - "80:80"
+    environment:
+      RMQ_URL: 'amqp://megan:megan123@rabbitmq:5672'
+    depends_on:
+      - rabbitmq
+    restart: unless-stopped
+    networks:
+      - backend-net
+
+  celery:
+    build:
+      context: .
+      dockerfile: DockerfileCelery
+    image: celery
+    container_name: celery
+    environment:
+      RMQ_URL: 'amqp://megan:megan123@rabbitmq:5672'
+    depends_on:
+      - fastapi
+    restart: unless-stopped
+    networks:
+      - backend-net
+
+networks:
+  backend-net:
+    driver: bridge

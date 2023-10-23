@@ -1,0 +1,7 @@
+celery
+rabbitmq-server
+rabbitmq
+pre-commit
+black
+pytest
+flake8
