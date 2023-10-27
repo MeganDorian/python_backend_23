@@ -1,0 +1,41 @@
+version: '3.9'
+
+services:
+  rabbitmq:
+    image: rabbitmq:management-alpine
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+    environment:
+      RABBITMQ_DEFAULT_USER: megan
+      RABBITMQ_DEFAULT_PASS: megan123
+      RABBITMQ_DEFAULT_VHOST: megan_vhost
+    restart: always
+    networks:
+      - net
+
+  fastapi:
+    build: .
+    command: poetry run uvicorn homework.app.main:app --reload
+    ports:
+      - "80:80"
+    environment:
+      RMQ_URL: 'amqp://megan:megan123@rabbitmq:5672/megan_vhost'
+    depends_on:
+      - rabbitmq
+    networks:
+      - net
+
+  work:
+    build: .
+    command: poetry run celery -A homework.tasks worker --loglevel=info -n work
+    environment:
+      RMQ_URL: 'amqp://megan:megan123@rabbitmq:5672/megan_vhost'
+    depends_on:
+      - fastapi
+    networks:
+      - net
+
+networks:
+  net:
+    driver: bridge
