@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 
-from models.models import User, Subject
+from homework.models.models import User, Subject
 
 
 def get_users(db: Session, skip: int = 0, limit: int = 100):

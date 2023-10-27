@@ -1,6 +1,6 @@
 import fastapi as fa
 
-from app.routers import router
+from homework.app.routers import router
 
 app = fa.FastAPI(title="Deadline schedule")
 

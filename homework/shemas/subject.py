@@ -2,8 +2,8 @@ from datetime import time
 
 from pydantic import BaseModel
 
-from models.enums import SubjectType, Days
-from shemas.homework import Homework
+from homework.models.enums import SubjectType, Days
+from homework.shemas.homework import Homework
 
 
 class SubjectBase(BaseModel):

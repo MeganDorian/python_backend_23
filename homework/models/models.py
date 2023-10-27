@@ -1,8 +1,8 @@
 from sqlalchemy import Column, Integer, String, Time, Enum, ForeignKey, Date
 from sqlalchemy.orm import relationship
 
-from db.database import Base
-from models.enums import SubjectType, Days
+from homework.db.database import Base
+from homework.models.enums import SubjectType, Days
 
 
 class User(Base):
